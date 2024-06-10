@@ -229,7 +229,9 @@ def parse_simulation_response(
             # "unknown" if hide_activations=True or a normalized activation (0-10) otherwise.
             # If it isn't, that means that the tab is not appearing as a delimiter, but rather
             # as a token, in which case we should move on to the next response token.
-            if response_tokens[i - 1] == "\t":
+            # NOTE: dont check via '==', since the token could also be ' \t'
+            # NOTE: still donet handle case where token is split into multiple tokens
+            if "\t" in response_tokens[i - 1]:
                 if response_tokens[i] != "unknown":
                     logger.debug("Ignoring tab token that is not followed by an 'unknown' token.")
                     continue
